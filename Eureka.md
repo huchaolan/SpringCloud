@@ -45,3 +45,22 @@ eureka:
 |server.port|http的端口号
 |eureka.client.service-url.defaultZone|eureka注册地址
 |eureka.client.register-with-eureka|eureka服务端不注册自己
+
+## Eureka客户端
+
+1. 从spring官网上生成maven的模板.这里有点要注意的Search for dependencies要填写Web和EurekaDiscovery。如果填写EurekaDiscovery会导致Springboot启动后就关闭了。
+2. 启动代码,需要添加@EnableDiscoveryClient,有人问了为什么不是@EableEurekaClient。由于EableEurekaClient只能用于Eureka注册中心，EnableDiscoveryClient可以适配多种注册中心。
+
+```java
+@SpringBootApplication
+@EnableDiscoveryClient
+public class ClientApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ClientApplication.class, args);
+    }
+}
+```
+
+3. eureka相关配置
+
+eureka.instance.hostname表示注册到服务器的域名，可以在eureka配置页面点击主机时跳转响应的页面
