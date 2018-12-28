@@ -64,3 +64,32 @@ public class ClientApplication {
 3. eureka相关配置
 
 eureka.instance.hostname表示注册到服务器的域名，可以在eureka配置页面点击主机时跳转响应的页面
+
+## Eureka高可用
+
+启动多个Eureka实例，并且相互注册，多个实例会将注册信息共享，来达到高可用的目的。客户端只需要将所有的注册服务地址配置后即可。
+
++ 两台Eureka实例相互注册
+
+![两台Eureka实例相互注册](imgs/eureka1.png)
+
++ 三台或者多台相互注册
+
+![三台或者多台相互注册](imgs/eureka2.png)
+
+服务端配置要求：
+
+1. Eureka实例的端口号不能相同
+2. 修改eureka.client.service-url.defaultZone属性,它的值时其他eureka服务的地址，并且用逗号分割
+
+```properties
+eureka.client.service-url.defaultZone=http://127.0.0.1:8761/eureka,http://127.0.0.1:8762/eureka
+```
+
+客户端配置要求
+
+1.客户端配置需要添加所有Eureka服务器注册地址
+
+```properties
+eureka.client.service-url.defaultZone=http://127.0.0.1:8761/eureka,http://127.0.0.1:8762/eureka,http://127.0.0.1:8762/eureka
+```
