@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.clouddemo.order.dataobject.OrderMaster;
 import com.clouddemo.order.dto.OrderDTO;
@@ -14,6 +15,7 @@ import com.clouddemo.order.repository.OrderMasterRepository;
 import com.clouddemo.order.service.OrderService;
 import com.clouddemo.order.util.IDGenerator;
 
+@Service
 public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
@@ -31,11 +33,9 @@ public class OrderServiceImpl implements OrderService {
 	    //TODO 查询商品信息
 		//TODO 计算总价
 		//TODO 扣库存
-		
-		
 		OrderMaster om = new OrderMaster();
-		om.setOrderId(IDGenerator.nextId());
-		BeanUtils.copyProperties(orderDTO, om);//dto有些字段是空值
+		orderDTO.setOrderId(IDGenerator.nextId());
+		BeanUtils.copyProperties(orderDTO, om);//复制属性
 		om.setOrderStatus(OrderStatusEnum.NEW.getStatus());
 		om.setPayStatus(PayStatusEnum.UNPAID.getStatus());
 		om.setOrderAmount(new BigDecimal(orderDTO.getOrderDetails().size()));

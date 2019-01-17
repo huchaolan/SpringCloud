@@ -1,10 +1,7 @@
 package com.clouddemo.order.dto;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.List;
-
-import javax.persistence.Id;
 
 import lombok.Data;
 
@@ -13,7 +10,6 @@ import com.clouddemo.order.dataobject.OrderDetail;
 @Data
 public class OrderDTO {
 
-	@Id
 	private String orderId;
 	
 	/**
