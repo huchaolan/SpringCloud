@@ -32,7 +32,7 @@ public class ProductController {
 	
 	@GetMapping("/getProductInfo")
 	public String getProductInfo() {
-		return "msg productinfo";
+		return "msg productinfo2";
 	}
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
