@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clouddemo.order.client.ProductClient;
 import com.clouddemo.order.conver.Form2DTOConver;
 import com.clouddemo.order.dataobject.OrderDetail;
 import com.clouddemo.order.dto.OrderDTO;
@@ -31,6 +32,9 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private ProductClient productClient;
 	
 	@PostMapping("/create")
 	public RestResult<Map<String,String>> createOrder(@Valid OrderForm orderForm,BindingResult bresult) {
