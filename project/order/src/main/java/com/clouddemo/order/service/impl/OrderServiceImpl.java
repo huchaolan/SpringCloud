@@ -9,12 +9,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.clouddemo.order.client.ProductClient;
 import com.clouddemo.order.client.bean.ProductInfo;
 import com.clouddemo.order.dataobject.OrderDetail;
 import com.clouddemo.order.dataobject.OrderMaster;
 import com.clouddemo.order.dto.OrderDTO;
+import com.clouddemo.order.dto.ProductDTO;
 import com.clouddemo.order.enums.ErrorEnums;
 import com.clouddemo.order.enums.OrderStatusEnum;
 import com.clouddemo.order.enums.PayStatusEnum;
@@ -40,12 +42,13 @@ public class OrderServiceImpl implements OrderService {
 	 * @param orderDTO
 	 * @return
 	 */
+	@Override
+	@Transactional
 	public OrderDTO createOrder(OrderDTO orderDTO) {
+		//获取产品详细信息
 		addProductInfo(orderDTO);
-		//TODO 计算总价
+		//计算总价
 		countTotalPricel(orderDTO);
-		//TODO 扣库存
-		
 		OrderMaster om = new OrderMaster();
 		orderDTO.setOrderId(IDGenerator.nextId());
 		BeanUtils.copyProperties(orderDTO, om);//复制属性
@@ -58,21 +61,37 @@ public class OrderServiceImpl implements OrderService {
 			order.setDetailId(IDGenerator.nextId());
 		}
 		orderList = orderDetailRepository.saveAll(orderList);
+		//扣库存
+		decreaseProductStock(orderDTO);
 	    return orderDTO;
     }
 	
+	/**
+	 * 扣库存
+	 * @param orderDTO
+	 */
+	private void decreaseProductStock(OrderDTO orderDTO) {
+		List<ProductDTO> pdtoList = orderDTO.getOrderDetails().stream()
+											.map(e->{return new ProductDTO(e.getProductId(),e.getProductQuantity());})
+											.collect(Collectors.toList());
+		String result = prodcutClient.decreaseProductStock(pdtoList);
+		if(!"success".equals(result)) {
+			throw new OrderException("9999",result);
+		}
+		
+    }
+
 	/**
 	 * 计算总价
 	 * @param orderDTO
 	 */
 	private void countTotalPricel(OrderDTO orderDTO) {
 		List<OrderDetail> orderList = orderDTO.getOrderDetails();
-		BigDecimal total = new BigDecimal(0);
+		BigDecimal total = BigDecimal.ZERO;
 		for(OrderDetail od:orderList) {
 			int quan = od.getProductQuantity();
 			BigDecimal price = od.getProductPrice();
-			BigDecimal pp = price.multiply(new BigDecimal(quan));
-			total = total.add(pp);
+			total = price.multiply(new BigDecimal(quan)).add(total);
 		}
 		orderDTO.setOrderAmount(total);
     }

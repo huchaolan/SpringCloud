@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.clouddemo.product.dataobject.ProductCategory;
 import com.clouddemo.product.dataobject.ProductInfo;
+import com.clouddemo.product.dto.ProductDTO;
 import com.clouddemo.product.service.ProductCategoryService;
 import com.clouddemo.product.service.ProductInfoService;
 import com.clouddemo.product.util.RestResultUtil;
@@ -32,8 +33,13 @@ public class ProductController {
 	private ProductCategoryService productCategoryService;
 	
 	@PostMapping("/info/byid")
-	public List<ProductInfo> getProductInfo(@RequestBody List<String> productidList) {
+	public List<ProductInfo> getProductInfo(@RequestBody ArrayList<String> productidList) {
 		return productInfoService.getProductInfo(productidList);
+	}
+	
+	@PostMapping("/stock/byid")
+	public String decreaseProductStock(@RequestBody ArrayList<ProductDTO> productDTOList) {
+		return productInfoService.decreaseProductStock(productDTOList);
 	}
 	
 	@RequestMapping(value="/list",method=RequestMethod.GET)

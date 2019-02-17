@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.clouddemo.product.dataobject.ProductInfo;
+import com.clouddemo.product.dto.ProductDTO;
+import com.clouddemo.product.service.ProductInfoService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -18,6 +20,9 @@ public class ProductInfoRepositoryTest {
 	
 	@Autowired
 	private ProductInfoRepository test = null;
+	
+	@Autowired
+	private ProductInfoService pservice = null;
 
 	@Test
 	public void testFindProductInfoByStatus() {
@@ -31,4 +36,9 @@ public class ProductInfoRepositoryTest {
 		Assert.assertTrue(result.size()>0);
 	}
 
+	@Test
+	public void testdecreaseProductStock() {
+		ProductDTO dto = new ProductDTO("157875227953464068",22);
+		pservice.decreaseProductStock(Arrays.asList(dto));
+	}
 }
