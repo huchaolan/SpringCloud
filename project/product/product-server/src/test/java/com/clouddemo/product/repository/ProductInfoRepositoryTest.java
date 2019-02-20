@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.clouddemo.product.common.ProductDTO;
 import com.clouddemo.product.dataobject.ProductInfo;
-import com.clouddemo.product.dto.ProductDTO;
 import com.clouddemo.product.service.ProductInfoService;
 
 @RunWith(SpringRunner.class)

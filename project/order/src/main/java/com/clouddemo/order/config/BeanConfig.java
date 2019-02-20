@@ -5,6 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * 配置restTemplate负载均衡
+ * @author PC
+ */
 @Component
 public class BeanConfig {
 

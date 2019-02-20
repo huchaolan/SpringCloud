@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.clouddemo.order.client.ProductClient;
 import com.clouddemo.order.conver.Form2DTOConver;
 import com.clouddemo.order.dataobject.OrderDetail;
 import com.clouddemo.order.dto.OrderDTO;
@@ -24,6 +23,7 @@ import com.clouddemo.order.form.OrderForm;
 import com.clouddemo.order.service.OrderService;
 import com.clouddemo.order.util.RestResultUtil;
 import com.clouddemo.order.vo.RestResult;
+import com.clouddemo.product.client.ProductClient;
 
 @RestController
 @RequestMapping("/order")

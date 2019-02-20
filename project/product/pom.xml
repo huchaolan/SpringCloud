@@ -13,45 +13,16 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>product</name>
 	<description>Demo project for Spring Boot</description>
+	<packaging>pom</packaging><!-- 模块化必须写层pom -->
 
-	<properties>
+	<properties><!-- 所有依赖的版本相关都放到属性变量中 -->
 	    <maven.compiler.target>1.8</maven.compiler.target>
 	    <maven.compiler.source>1.8</maven.compiler.source>
 		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
+		<product-common.version>0.0.1-SNAPSHOT</product-common.version>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-	    <dependency>
-	        <groupId>mysql</groupId>
-	        <artifactId>mysql-connector-java</artifactId>
-	        <version>8.0.13</version><!--$NO-MVN-MAN-VER$-->
-	    </dependency>
-	    <dependency>
-		    <groupId>org.projectlombok</groupId>
-		    <artifactId>lombok</artifactId>
-		    <version>1.18.4</version><!--$NO-MVN-MAN-VER$-->
-		    <scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-
-	<dependencyManagement>
+	<dependencyManagement><!-- 依赖管理具有继承功能，但不会影响子模块的依赖，只有在子模块声明依赖后不用输入版本，版本由聚合项目控制 -->
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
@@ -60,15 +31,16 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>com.clouddemo</groupId>
+				<artifactId>product-common</artifactId>
+				<version>${product-common.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+	
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
 			<plugin>
 	            <groupId>org.apache.maven.plugins</groupId>
 	            <artifactId>maven-compiler-plugin</artifactId>
@@ -101,4 +73,9 @@
 		</plugins>
 	</build>
 
+	<modules>
+		<module>product-common</module>
+		<module>product-server</module>
+		<module>product-client</module>
+	</modules>
 </project>

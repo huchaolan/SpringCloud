@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clouddemo.product.common.ProductDTO;
+import com.clouddemo.product.common.ProductInfoBean;
 import com.clouddemo.product.dataobject.ProductCategory;
 import com.clouddemo.product.dataobject.ProductInfo;
-import com.clouddemo.product.dto.ProductDTO;
 import com.clouddemo.product.service.ProductCategoryService;
 import com.clouddemo.product.service.ProductInfoService;
 import com.clouddemo.product.util.RestResultUtil;
@@ -33,7 +34,7 @@ public class ProductController {
 	private ProductCategoryService productCategoryService;
 	
 	@PostMapping("/info/byid")
-	public List<ProductInfo> getProductInfo(@RequestBody ArrayList<String> productidList) {
+	public List<ProductInfoBean> getProductInfo(@RequestBody ArrayList<String> productidList) {
 		return productInfoService.getProductInfo(productidList);
 	}
 	

@@ -1,4 +1,4 @@
-package com.clouddemo.product.dto;
+package com.clouddemo.product.common;
 
 import lombok.Data;
 

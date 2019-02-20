@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.clouddemo.order.client.ProductClient;
-import com.clouddemo.order.client.bean.ProductInfo;
+import com.clouddemo.product.client.ProductClient;
+import com.clouddemo.product.common.ProductInfoBean;
 
 @RestController
 @RequestMapping("/product")
@@ -27,8 +27,8 @@ public class TestController {
 	private ProductClient prodcutClient;
 	
 	@GetMapping("/test")
-	public List<ProductInfo>  test() throws Exception {
-		List<ProductInfo>  productList = prodcutClient.getProductInfo(Arrays.asList("157875227953464068","164103465734242707"));
+	public List<ProductInfoBean>  test() throws Exception {
+		List<ProductInfoBean>  productList = prodcutClient.getProductInfo(Arrays.asList("157875227953464068","164103465734242707"));
 		return productList;
 	}
 }

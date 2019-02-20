@@ -2,15 +2,18 @@ package com.clouddemo.product.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.clouddemo.product.common.ProductDTO;
+import com.clouddemo.product.common.ProductInfoBean;
 import com.clouddemo.product.dataobject.ProductInfo;
-import com.clouddemo.product.dto.ProductDTO;
 import com.clouddemo.product.enums.ProductError;
 import com.clouddemo.product.enums.ProductType;
 import com.clouddemo.product.exception.ProductException;
@@ -30,8 +33,13 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 	}
 
 	@Override
-    public List<ProductInfo> getProductInfo(List<String> productidList) {
-	    return productInfoRepository.findByProductIdIn(productidList);
+    public List<ProductInfoBean> getProductInfo(List<String> productidList) {
+		List<ProductInfo> productList = productInfoRepository.findByProductIdIn(productidList);
+		return productList.stream().map(e->{
+					ProductInfoBean bean = new ProductInfoBean(); 
+					BeanUtils.copyProperties(e, bean); 
+					return bean;
+				}).collect(Collectors.toList());
     }
 
 	@Override

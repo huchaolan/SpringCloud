@@ -11,12 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.clouddemo.order.client.ProductClient;
-import com.clouddemo.order.client.bean.ProductInfo;
 import com.clouddemo.order.dataobject.OrderDetail;
 import com.clouddemo.order.dataobject.OrderMaster;
 import com.clouddemo.order.dto.OrderDTO;
-import com.clouddemo.order.dto.ProductDTO;
 import com.clouddemo.order.enums.ErrorEnums;
 import com.clouddemo.order.enums.OrderStatusEnum;
 import com.clouddemo.order.enums.PayStatusEnum;
@@ -25,6 +22,9 @@ import com.clouddemo.order.repository.OrderDetailRepository;
 import com.clouddemo.order.repository.OrderMasterRepository;
 import com.clouddemo.order.service.OrderService;
 import com.clouddemo.order.util.IDGenerator;
+import com.clouddemo.product.client.ProductClient;
+import com.clouddemo.product.common.ProductDTO;
+import com.clouddemo.product.common.ProductInfoBean;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -103,20 +103,21 @@ public class OrderServiceImpl implements OrderService {
 	private void addProductInfo(OrderDTO orderDTO) {
 		List<OrderDetail> orderDetailList = orderDTO.getOrderDetails();
 		List<String> productIdList = orderDetailList.stream().map(OrderDetail::getProductId).collect(Collectors.toList());
-		List<ProductInfo> productInfos = prodcutClient.getProductInfo(productIdList);
+		List<ProductInfoBean> productInfos = prodcutClient.getProductInfo(productIdList);
+		
 		if(productInfos.isEmpty()) {
 			throw new OrderException(ErrorEnums.ERROR_4);
 		}
 		
-		Map<String,ProductInfo> productIdMap = new HashMap<String,ProductInfo>();
-	    for(ProductInfo product:productInfos){
+		Map<String,ProductInfoBean> productIdMap = new HashMap<String,ProductInfoBean>();
+	    for(ProductInfoBean product:productInfos){
 	    	productIdMap.put(product.getProductId(), product);
 	    }
 	    
 	    for(OrderDetail orderDetail:orderDetailList) {
 	    	String prodcutId=orderDetail.getProductId();
 	    	if(productIdMap.containsKey(prodcutId)) {
-	    		ProductInfo pinfo = productIdMap.get(prodcutId);
+	    		ProductInfoBean pinfo = productIdMap.get(prodcutId);
 	    		orderDetail.setProductIcon(pinfo.getProductIcon());
 	    		orderDetail.setProductName(pinfo.getProductName());
 	    		orderDetail.setProductPrice(pinfo.getProductPrice());
